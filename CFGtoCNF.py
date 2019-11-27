@@ -29,40 +29,46 @@ def convertToCNF(CFG, outputfile):
     rules = []
     language = []
     with open(outputfile, "w") as out:
-
         # step 1: make new start rule
         start = CFG[0]   # finding original start letter
         firstline = start + "0->" + start
         CNF = firstline + "\n" + CFG
         stage1 = CNF
         out.write("STEP 1: \n\n" + stage1 + "\n")
-        # step 2: remove all empty strings
-        #for i in range(CNF):
-            #if CNF[i] == "e":
-                # need to come up with cases & figure out how to delete the empty string while keeping the
+
+        # step 2: remove all empty strings ------TO-DO--------
+        for i in range(CNF-1):
+            if CNF[i] == "e":
+                if CNF[i-1] == ">" and CNF[i+1] == "\n":
+                    # the empty string is the only option for this rule
+
+                elif (CNF[i-1] == ">" and CNF[i+1] == "|") or (CNF[i-1] == "|" and CNF[i+1] == "\n"):
+                    # there is another case to consider for this rule (contains pipe)
+                    # need some nested if statements in here
+
 
         stage2 = ""
         out.write("STEP 2: \n\n" + stage2 + "\n")
-        # step 3: remove S0->S (copy S to S0)
-        new = start + "0" + CNF[7:CNF.find("\n", 6)]
-        CNF = CNF.replace(firstline, new)   # by design, the second line will always begin at index 6 because the first
-                                            # line will always be initialized with 5 chars plus the newline character
 
+        # step 3: remove S0->S (copy S to S0)
+        # 2nd line always begins at index 6 because step1 initializes the first line with 6 chars
+        new = start + "0" + CNF[7:CNF.find("\n", 6)]
+        CNF = CNF.replace(firstline, new)   # replace the first line with a copy of the original CFG's first line
         stage3 = CNF
         out.write("STEP 3: \n\n" + stage3 + "\n")
-        # step 4: remove rules that go to three or more terms
+
+        # step 4: remove rules that go to three or more terms ------TO-DO--------
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
-        # step 5: remove rules that have capital letters combined with lowercase letters
+
+        # FOR STEP 5 WE MIGHT NEED REGEX TO CHECK UPPER/LOWER
+        # step 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
 
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
 
 
-
-
+# running program
 my_CFG = convertToString("CFG.txt")
-
 convertToCNF(my_CFG, "test.txt")
-
