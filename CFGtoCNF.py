@@ -40,17 +40,23 @@ def convertToCNF(CFG, outputfile):
         list = CNF.split("\n")  # split up CNF into seperate strings for each line
 
         for k in range(len(list)):  # loop through each line
-            for i in range(len(list[k])):   # loop through contents of line
+            for i in range(len(list[k])-1):   # loop through contents of line
                 if list[k][i] == "e":
-                    if list[k][i - 1] == ">" and list[k][i + 1] == "|": # there is another case after e
-                        rule = list[k][0]   # find rule that contains e
-                        
+                    rule = list[k][0]   # find rule that contains e
+                    for j in range(len(list)):  # search through to find the rule in contents of other rules
+                        if list[j].find(rule) != list[j][0]:    # so we don't count the rule itself
+                            location = list[j].find(rule)
+                            # case: rule is not combined with any other character
+                            if (list[j][location-1] == ">" or list[j][location-1] == "|") and (list[j][location+1] == "|" or list[j][location+1] == "\n"):
+                                list[j] = list[j] + "|e"    # propagating empty string
 
-
-                    elif list[k][i - 1] == "|" and list[k][i + 1] == "\n":  # there is a case before e
-
-
-                    elif list[k][i-1] == ">" and list[k][i+1] == "\n":
+                                # remove original empty string from rule
+                                if list[k][i - 1] == ">" and list[k][i + 1] == "|":   # there is another case after e
+                                    list[k] = list[k].replace("e|", "")
+                                elif list[k][i - 1] == "|" and list[k][i + 1] == "\n":  # there is a case before e
+                                    list[k] = list[k].replace("|e", "")
+                                elif list[k][i-1] == ">" and list[k][i+1] == "\n":   # e is only case for rule
+                                    list[k] = list[k].replace(list[k], "")
 
 
         stage2 = ""
