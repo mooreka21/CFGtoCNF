@@ -37,14 +37,20 @@ def convertToCNF(CFG, outputfile):
         out.write("STEP 1: \n\n" + stage1 + "\n")
 
         # step 2: remove all empty strings ------TO-DO--------
-        for i in range(CNF-1):
-            if CNF[i] == "e":
-                if CNF[i-1] == ">" and CNF[i+1] == "\n":
-                    # the empty string is the only option for this rule
+        list = CNF.split("\n")  # split up CNF into seperate strings for each line
 
-                elif (CNF[i-1] == ">" and CNF[i+1] == "|") or (CNF[i-1] == "|" and CNF[i+1] == "\n"):
-                    # there is another case to consider for this rule (contains pipe)
-                    # need some nested if statements in here
+        for k in range(len(list)):  # loop through each line
+            for i in range(len(list[k])):   # loop through contents of line
+                if list[k][i] == "e":
+                    if list[k][i - 1] == ">" and list[k][i + 1] == "|": # there is another case after e
+                        rule = list[k][0]   # find rule that contains e
+                        
+
+
+                    elif list[k][i - 1] == "|" and list[k][i + 1] == "\n":  # there is a case before e
+
+
+                    elif list[k][i-1] == ">" and list[k][i+1] == "\n":
 
 
         stage2 = ""
