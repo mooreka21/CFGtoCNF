@@ -237,15 +237,17 @@ def convertToCNF(CFG, outputfile):
                                         # e is only case for rule
                                         elif mylist[k][i - 1] == ">":
                                             mylist[k] = mylist[k].replace(mylist[k], "")
-
+                # print updated grammar to output file
                 string = ""
                 for i in range(len(mylist)):
                     string = string + mylist[i] + "\n"
 
                     CNF = CNF.replace(CNF[0:], string)
                 count = sum('e' in s for s in mylist)
-                stage2 = CNF
-                out.write(stage2 + "\n")
+
+        stage2 = CNF
+        # print updated grammar to output file
+        out.write("STEP 2: \n\n" + stage2 + "\n")
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 3: remove S0->S (copy S to S0)
@@ -284,16 +286,16 @@ def convertToCNF(CFG, outputfile):
                         print(mylist[k])
                         print(i)
                     # last location of rule contents
-                    # elif mylist[k][i-1] == "|" and mylist[k][i+1] == "" and mylist[k][i].isupper():
-                    #     rule = mylist[k][i]
-                    #     print(rule)
-                    #     for j in range(len(mylist) - 1):
-                    #         if mylist[j][0] == rule:
-                    #             copy = mylist[j][mylist[j].find(">") + 1:]
-                    #             print(copy)
-                    #     mylist[k] = mylist[k].replace(mylist[k][i], copy)
-                    #     print(mylist[k])
-                    #     print(i)
+                    elif mylist[k][i-1] == "|" and mylist[k][i+1] == "" and mylist[k][i].isupper():
+                        rule = mylist[k][i]
+                        print(rule)
+                        for j in range(len(mylist) - 1):
+                            if mylist[j][0] == rule:
+                                copy = mylist[j][mylist[j].find(">") + 1:]
+                                print(copy)
+                        mylist[k] = mylist[k].replace(mylist[k][i], copy)
+                        print(mylist[k])
+                        print(i)
                     # last location of rule contents
                     elif mylist[k][-2] == "|" and mylist[k][-1].isupper():
                         rule = mylist[k][-1]
@@ -323,6 +325,10 @@ def convertToCNF(CFG, outputfile):
             for i in range(len(mylist[k])):
                 if "->" and "|" not in mylist[k][i:i+3]:
                     triple = mylist[k][i:i+3]
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                if mylist[k][i:i+3]:
+                    triple = mylist[k][i:i+3]
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
@@ -331,17 +337,20 @@ def convertToCNF(CFG, outputfile):
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-        for k in range(len(mylist)):  # loop through each line
-            for i in range(len(mylist[k])):  # loop through contents of line
-                if mylist[k][i].isupper() and i == len(mylist[k]):
-                    break
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
+
+
+
+
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
 
 
 # Runs the program
-my_CFG = convertToString("CFG.txt")
-convertToCNF(my_CFG, "test.txt")
+#my_CFG = convertToString("CFG.txt")
+#convertToCNF(my_CFG, "test.txt")
 
-# my_CFG = convertToString("CFG2.txt")
-# convertToCNF(my_CFG, "test2.txt")
+my_CFG = convertToString("CFG2.txt")
+convertToCNF(my_CFG, "test2.txt")
