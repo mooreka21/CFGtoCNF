@@ -22,6 +22,17 @@ def convertToString(inputfile):
 
 
 # ==================================================================================
+#  reverseString - reverses a string
+#
+# ==================================================================================
+def reverseString(s):
+    if len(s) == 0:
+        return s
+    else:
+        return reverseString(s[1:]) + s[0]
+
+
+# ==================================================================================
 # convertToCNF - takes CFG from convertToString then performs conversion to CNF and
 #                writes to the output file.
 #
@@ -59,8 +70,6 @@ def convertToCNF(CFG, outputfile):
                                     continue
                                 if location == 0:
                                     location = mylist[j].find(rule, 1)
-                                print(str(location))
-                                print(len(mylist[j]))
                                 # ==================================================================================
                                 # CASE: rule is not combined with any other character
                                 # ==================================================================================
@@ -245,9 +254,9 @@ def convertToCNF(CFG, outputfile):
                     CNF = CNF.replace(CNF[0:], string)
                 count = sum('e' in s for s in mylist)
 
-        stage2 = CNF
-        # print updated grammar to output file
-        out.write("STEP 2: \n\n" + stage2 + "\n")
+                stage2 = CNF
+                # print updated grammar to output file
+                out.write(stage2 + "\n")
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 3: remove S0->S (copy S to S0)
@@ -337,20 +346,17 @@ def convertToCNF(CFG, outputfile):
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-        for k in range(len(mylist)):
-            for i in range(len(mylist[k])):
-                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
-
-
-
-
+        for k in range(len(mylist)):  # loop through each line
+            for i in range(len(mylist[k])):  # loop through contents of line
+                if mylist[k][i].isupper() and i == len(mylist[k]):
+                    break
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
 
 
 # Runs the program
-#my_CFG = convertToString("CFG.txt")
-#convertToCNF(my_CFG, "test.txt")
+my_CFG = convertToString("CFG.txt")
+convertToCNF(my_CFG, "test.txt")
 
-my_CFG = convertToString("CFG2.txt")
-convertToCNF(my_CFG, "test2.txt")
+# my_CFG = convertToString("CFG2.txt")
+# convertToCNF(my_CFG, "test2.txt")
