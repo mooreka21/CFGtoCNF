@@ -3,23 +3,21 @@
 # CS 357 B
 # Fall 2019
 # Kayla Moore & Addison Raak
-
-import re
+# Python program that converts a Context Free Grammar into Chomsky Normal Form
 
 
 #################################################
 # convertToString - reads input file and converting
-# to a string
+# to a string. Assumes inputfile is in valid CFG format
 #################################################
 def convertToString(inputfile):
-    # also need to check that it is in a valid CFG format! consult bio423 labs for similar check
     with open(inputfile, 'r') as file:
         CFG = file.read()
-        # remove all return, newline characters, tabs, and spaces
+        # remove all returns, tabs, and spaces
         CFG = CFG.replace("\r", "")
-        # CFG = CFG.replace("\n", "")
         CFG = CFG.replace("\t", "")
         CFG = CFG.replace(" ", "")
+    # returns the CFG as a string with all spacing removed
     return CFG
 
 
