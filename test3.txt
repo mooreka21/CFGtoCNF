@@ -1,0 +1,35 @@
+-------BEGIN CONVERTING CFG TO CNF!-------
+
+STEP 1: 
+
+V0->V
+V->Hd|c
+H->V|dc|e
+
+STEP 2: 
+
+V0->V
+V->Hd|c|d
+H->V|dc|d
+
+STEP 3: 
+
+V0->Hd|c|d
+V->Hd|c|d
+H->Hd|c|d|dc|d
+
+STEP 4: 
+
+V0->Hd|c|d
+V->Hd|c|d
+H->Hd|c|d|dc|d
+
+STEP 5: 
+
+V0->HF1|c|F1
+V->HF1|c|F1
+H->HF1|c|F1|F1c|F1
+F1->d
+
+
+-------CFG SUCCESSFULLY CONVERTED TO CNF!-------
