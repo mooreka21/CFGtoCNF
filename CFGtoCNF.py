@@ -4,6 +4,7 @@
 # Fall 2019
 # Kayla Moore & Addison Raak
 
+# testing to see if the branching worked properly
 
 #################################################
 # convertToString - reads input file and converting
