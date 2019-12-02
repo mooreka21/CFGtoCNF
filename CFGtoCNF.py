@@ -6,11 +6,11 @@
 # Python program that converts a Context Free Grammar into Chomsky Normal Form
 
 
-# ==================================================================================
-# convertToString - reads input file and converts it to a string.
-# ==================================================================================
+#################################################
+# convertToString - reads input file and converting
+# to a string. Assumes inputfile is in valid CFG format
+#################################################
 def convertToString(inputfile):
-    # also need to check that it is in a valid CFG format! consult bio423 labs for similar check
     with open(inputfile, 'r') as file:
         CFG = file.read()
         # remove all returns, tabs, and spaces
@@ -30,8 +30,6 @@ def convertToString(inputfile):
 #
 # ==================================================================================
 def convertToCNF(CFG, outputfile):
-    rules = []
-    language = []
     with open(outputfile, "w") as out:
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 1: make new start rule
@@ -248,7 +246,7 @@ def convertToCNF(CFG, outputfile):
                 count = sum('e' in s for s in mylist)
                 stage2 = CNF
                 out.write(stage2 + "\n")
-'''
+
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 3: remove S0->S (copy S to S0)
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -318,6 +316,9 @@ def convertToCNF(CFG, outputfile):
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 4: remove rules that go to three or more terms ------TO-DO--------
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+        alpha = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
+        lower = alpha.split(" ")
+        upper = alpha.upper().split(" ")
         for k in range(len(mylist)):
             for i in range(len(mylist[k])):
                 if "->" and "|" not in mylist[k][i:i+3]:
@@ -336,7 +337,7 @@ def convertToCNF(CFG, outputfile):
                     break
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
-'''
+
 
 # Runs the program
 my_CFG = convertToString("CFG.txt")
