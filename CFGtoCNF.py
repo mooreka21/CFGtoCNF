@@ -215,7 +215,7 @@ def convertToCNF(CFG, outputfile):
                                         # e is only case for rule
                                         elif mylist[k][i - 1] == ">":
                                             mylist[k] = mylist[k].replace(mylist[k], "")
-
+                # print updated grammar to output file
                 string = ""
                 for i in range(len(mylist)):
                     string = string + mylist[i] + "\n"
@@ -291,18 +291,18 @@ def convertToCNF(CFG, outputfile):
         alpha = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
         lower = alpha.split(" ")
         upper = alpha.upper().split(" ")
-        # for k in range(len(mylist)):
-        #     for i in range(len(mylist[k])):
-        #         if mylist[k][i:i+3]:
-        #             triple = mylist[k][i:i+3]
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                if mylist[k][i:i+3]:
+                    triple = mylist[k][i:i+3]
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
 
         # STEP 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
-        # for k in range(len(mylist)):
-        #     for i in range(len(mylist[k])):
-        #         if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
 
 
 
@@ -312,8 +312,8 @@ def convertToCNF(CFG, outputfile):
 
 
 # Runs the program
-my_CFG = convertToString("CFG.txt")
-convertToCNF(my_CFG, "test.txt")
+#my_CFG = convertToString("CFG.txt")
+#convertToCNF(my_CFG, "test.txt")
 
-#my_CFG = convertToString("CFG2.txt")
-#convertToCNF(my_CFG, "test2.txt")
+my_CFG = convertToString("CFG2.txt")
+convertToCNF(my_CFG, "test2.txt")
