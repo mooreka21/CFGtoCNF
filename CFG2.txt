@@ -1,0 +1,3 @@
+S -> STU | US | b
+T -> abT | Ubb | є
+U -> Sa | a

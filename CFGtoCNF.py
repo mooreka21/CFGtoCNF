@@ -4,6 +4,7 @@
 # Fall 2019
 # Kayla Moore & Addison Raak
 
+import re
 
 #################################################
 # convertToString - reads input file and converting
@@ -34,7 +35,7 @@ def convertToCNF(CFG, outputfile):
         firstline = start + "0->" + start
         CNF = firstline + "\n" + CFG
         stage1 = CNF
-        out.write("STEP 1: \n" + stage1 + "\n\n")
+        out.write("STEP 1: \n\n" + stage1 + "\n")
 
         # step 2: remove all empty strings ------TO-DO--------
         list = CNF.split("\n")  # split up CNF into seperate strings for each line
@@ -91,14 +92,22 @@ def convertToCNF(CFG, outputfile):
                 count = sum('e' in s for s in list)
 
         stage2 = CNF
-        out.write("STEP 2: \n" + stage2 + "\n")
-
+        out.write("STEP 2: \n\n" + stage2 + "\n")
         # step 3: remove S0->S (copy S to S0)
         # 2nd line always begins at index 6 because step1 initializes the first line with 6 chars
         new = start + "0" + CNF[7:CNF.find("\n", 6)]
         CNF = CNF.replace(firstline, new)   # replace the first line with a copy of the original CFG's first line
+
+        # case: remove any rules that point to a solo rule (single uppercase character)
+        mylist = CNF.split("\n")  # split up CNF into separate strings for each line
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                word = re.compile("(->[A-Z]\|)|(\|[A-Z]\|)|(\|[A-Z]$)")
+                if word.match(mylist[k]):
+                    mylist[k]
+
         stage3 = CNF
-        out.write("STEP 3: \n" + stage3 + "\n\n\n")
+        out.write("STEP 3: \n\n" + stage3 + "\n")
 
         # check to see if any rule goes to itself
         # make sure no components are just one upper case letter
@@ -114,6 +123,10 @@ def convertToCNF(CFG, outputfile):
         out.write("STEP 5: \n\n" + stage5 + "\n")
 
 
+
 # running program
 my_CFG = convertToString("CFG.txt")
 convertToCNF(my_CFG, "test.txt")
+
+my_CFG = convertToString("CFG2.txt")
+convertToCNF(my_CFG, "test2.txt")
