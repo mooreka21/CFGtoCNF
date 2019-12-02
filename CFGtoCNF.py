@@ -260,16 +260,16 @@ def convertToCNF(CFG, outputfile):
                         print(mylist[k])
                         print(i)
                     # last location of rule contents
-                    # elif mylist[k][i-1] == "|" and mylist[k][i+1] == "" and mylist[k][i].isupper():
-                    #     rule = mylist[k][i]
-                    #     print(rule)
-                    #     for j in range(len(mylist) - 1):
-                    #         if mylist[j][0] == rule:
-                    #             copy = mylist[j][mylist[j].find(">") + 1:]
-                    #             print(copy)
-                    #     mylist[k] = mylist[k].replace(mylist[k][i], copy)
-                    #     print(mylist[k])
-                    #     print(i)
+                    elif mylist[k][i-1] == "|" and mylist[k][i+1] == "" and mylist[k][i].isupper():
+                        rule = mylist[k][i]
+                        print(rule)
+                        for j in range(len(mylist) - 1):
+                            if mylist[j][0] == rule:
+                                copy = mylist[j][mylist[j].find(">") + 1:]
+                                print(copy)
+                        mylist[k] = mylist[k].replace(mylist[k][i], copy)
+                        print(mylist[k])
+                        print(i)
                     # last location of rule contents
                     elif mylist[k][-2] == "|" and mylist[k][-1].isupper():
                         rule = mylist[k][-1]
@@ -291,18 +291,18 @@ def convertToCNF(CFG, outputfile):
         alpha = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
         lower = alpha.split(" ")
         upper = alpha.upper().split(" ")
-        for k in range(len(mylist)):
-            for i in range(len(mylist[k])):
-                if mylist[k][i:i+3].:
-                    triple = mylist[k][i:i+3]
+        # for k in range(len(mylist)):
+        #     for i in range(len(mylist[k])):
+        #         if mylist[k][i:i+3]:
+        #             triple = mylist[k][i:i+3]
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
 
         # STEP 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
-        for k in range(len(mylist)):
-            for i in range(len(mylist[k])):
-                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
+        # for k in range(len(mylist)):
+        #     for i in range(len(mylist[k])):
+        #         if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
 
 
 
