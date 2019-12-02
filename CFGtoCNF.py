@@ -41,193 +41,195 @@ def convertToCNF(CFG, outputfile):
         CNF = firstline + "\n" + CFG
         stage1 = CNF
         # print updated grammar to output file
-        out.write("STEP 1: \n\n" + stage1 + "\n\n")
+        out.write("STEP 1: \n" + stage1 + "\n\n")
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 2: remove all empty string components
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         out.write("STEP 2: \n")
-        list = CNF.split("\n")  # split up CNF into seperate strings for each line
-        count = sum('e' in s for s in list)
+        mylist = CNF.split("\n")  # split up CNF into seperate strings for each line
+        count = sum('e' in s for s in mylist)
         while count > 0:
             for loop in range(count):
-                for k in range(len(list)):  # loop through each line
-                    for i in range(len(list[k])):   # loop through contents of line
-                        if list[k][i] == "e":
-                            rule = list[k][0]   # find rule that contains e
-                            for j in range(len(list)):  # search through to find the rule in contents of other rules
-                                if list[j].find(rule) != 0:    # so we don't count the rule itself
-                                    location = list[j].find(rule)
+                for k in range(len(mylist)):  # loop through each line
+                    for i in range(len(mylist[k])):   # loop through contents of line
+                        if mylist[k][i] == "e":
+                            rule = mylist[k][0]   # find rule that contains e
+                            for j in range(len(mylist)):  # search through to find the rule in contents of other rules
+                                if mylist[j].find(rule) != 0:    # so we don't count the rule itself
+                                    location = mylist[j].find(rule)
                                     if location == -1:
                                         continue
-
+                                    print(str(location))
+                                    print(len(mylist[j]))
                                     # ==================================================================================
                                     # CASE: rule is not combined with any other character
                                     # ==================================================================================
                                     # EXAMPLE: A
-                                    if (list[j][location - 1] == ">" or list[j][location - 1] == "|") and (
-                                            list[j][location + 1] == "|" or list[j][location + 1] == "\n"):
-                                        list[j] = list[j] + "|e"  # propagating empty string
+                                    if (mylist[j][location - 1] == ">" or mylist[j][location - 1] == "|") and (
+                                            mylist[j][location + 1] == "|" or mylist[j][location + 1] == "\n"):
+                                        mylist[j] = mylist[j] + "|e"  # propagating empty string
                                         #
                                         # remove original empty string from rule
                                         #
                                         # there is component before the 'e' component
-                                        #=if list[k][i - 1] == "|":
-                                        if "|e" in list[k]:
-                                            list[k] = list[k].replace("|e", "")
+                                        #=if mylist[k][i - 1] == "|":
+                                        if "|e" in mylist[k]:
+                                            mylist[k] = mylist[k].replace("|e", "")
                                         # e is only case for rule
-                                        #if list[k][i - 1] == ">":
-                                        elif ">e" in list[k]:
-                                            list[k] = list[k].replace(list[k], "")
+                                        #if mylist[k][i - 1] == ">":
+                                        elif ">e" in mylist[k]:
+                                            mylist[k] = mylist[k].replace(mylist[k], "")
 
                                     # ==================================================================================
                                     # CASE: rule is combined with other characters
                                     # ==================================================================================
 
-                                    if location < len(list[k]) - 1:
+                                    if location < len(mylist[j]) - 2:
 
                                         # there are two chars following rule
                                         # EXAMPLE: AXX or Axx
-                                        if (list[j][location + 1] != "|" and list[j][location + 1] != "\n") and (
-                                                list[j][location + 1] != rule and list[j][location + 2] != "|" and (
-                                                list[j][location + 2] != "\n")) and (
-                                                list[j][location + 2] != rule):
-                                            list[j] = list[j] + "|" + list[j][location + 1:location + 3]
+                                        if (mylist[j][location + 1] != "|" and mylist[j][location + 1] != "\n") and (
+                                                mylist[j][location + 1] != rule and mylist[j][location + 2] != "|" and (
+                                                mylist[j][location + 2] != "\n")) and (
+                                                mylist[j][location + 2] != rule):
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location + 1:location + 3]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                         # there are two rules with a character in between
                                         # EXAMPLE: AXA or AxA
-                                        if (list[j][location + 1] != "|" and list[j][location + 1] != "\n") and (
-                                                list[j][location + 1] != rule) and list[j][location + 2] != "|" and (
-                                                list[j][location + 2] != "\n") and (
-                                                list[j][location + 2] == rule):
-                                            list[j] = list[j] + "|" + \
-                                                      list[j][location + 1:location + 3] + "|" + \
-                                                      list[j][location:location + 2] + "|" + \
-                                                      list[j][location + 1]
+                                        if (mylist[j][location + 1] != "|" and mylist[j][location + 1] != "\n") and (
+                                                mylist[j][location + 1] != rule) and mylist[j][location + 2] != "|" and (
+                                                mylist[j][location + 2] != "\n") and (
+                                                mylist[j][location + 2] == rule):
+                                            mylist[j] = mylist[j] + "|" + \
+                                                      mylist[j][location + 1:location + 3] + "|" + \
+                                                      mylist[j][location:location + 2] + "|" + \
+                                                      mylist[j][location + 1]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                         # there are two rules, then a character following
                                         # EXAMPLE: AAX or AAx
-                                        if list[j][location + 1] == rule and list[j][location + 2] != "|" and (
-                                                list[j][location + 2] != "\n") and list[j][location + 2] != "" and(
-                                                list[j][location + 2] != rule):
-                                            list[j] = list[j] + "|" + list[j][location + 1]
+                                        if mylist[j][location + 1] == rule and mylist[j][location + 2] != "|" and (
+                                                mylist[j][location + 2] != "\n") and mylist[j][location + 2] != "" and(
+                                                mylist[j][location + 2] != rule) and mylist[j][location] == rule:
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location + 2]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
-                                    if location < len(list[k]):
+                                    if location < len(mylist[j]) - 1:
 
                                         # there is one char proceeding and following rule
                                         # EXAMPLE: XAX or xAx
-                                        if (list[j][location - 1] != "|" and list[j][location - 1] != ">") and (
-                                                list[j][location + 1] != "|" and list[j][location + 1] != "") and (
-                                                list[j][location + 1] != rule) and list[j][location] == rule:
+                                        if (mylist[j][location - 1] != "|" and mylist[j][location - 1] != ">") and (
+                                                mylist[j][location - 1] != rule) and (
+                                                mylist[j][location + 1] != "|" and mylist[j][location + 1] != "") and (
+                                                mylist[j][location + 1] != rule) and mylist[j][location] == rule:
 
-                                            list[j] = list[j] + "|" + list[j][location - 1] + list[j][location + 1]
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location - 1] + mylist[j][location + 1]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                         # there is only one char proceeding rule
                                         # EXAMPLE: XA or xA
-                                        if (list[j][location - 1] != "|" and list[j][location - 1] != ">") and (
-                                                list[j][location + 1] == "|" or list[j][location + 1] == "") and (
-                                                list[j][location - 2] == "|" or list[j][location - 2] == ">"):
-                                            list[j] = list[j] + "|" + list[j][location - 1]
+                                        if (mylist[j][location - 1] != "|" and mylist[j][location - 1] != ">") and (
+                                                mylist[j][location + 1] == "|" or mylist[j][location + 1] == "") and (
+                                                mylist[j][location - 2] == "|" or mylist[j][location - 2] == ">"):
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location - 1]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                         # there is only one character following the rule
                                         # EXAMPLE: AX or Ax
-                                        if (list[j][location + 1] != "|" and list[j][location + 1] != "") and (
-                                                list[j][location - 1] == "|" or list[j][location - 1] == ">") and (
-                                                list[j][location + 2] == "|" or list[j][location + 2] == ""):
-                                            list[j] = list[j] + "|" + list[j][location + 1]
+                                        if (mylist[j][location + 1] != "|" and mylist[j][location + 1] != "") and (
+                                                mylist[j][location - 1] == "|" or mylist[j][location - 1] == ">") and (
+                                                mylist[j][location + 2] == "|" or mylist[j][location + 2] == ""):
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location + 1]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                         # there are two rules proceeded by a character
                                         # EXAMPLE: XAA or xAA
-                                        if (list[j][location - 1] != rule and list[j][location - 1] != "|") and (
-                                                list[j][location - 1] != ">" and list[j][location + 1] == rule):
-                                            list[j] = list[j] + "|" + list[j][location - 1]
+                                        if (mylist[j][location - 1] != rule and mylist[j][location - 1] != "|") and (
+                                                mylist[j][location - 1] != ">" and mylist[j][location + 1] == rule):
+                                            mylist[j] = mylist[j] + "|" + mylist[j][location - 1]
                                             #
                                             # remove original empty string from rule
                                             #
                                             # there is component before the 'e' component
-                                            if list[k][i - 1] == "|":
-                                                list[k] = list[k].replace("|e", "")
+                                            if mylist[k][i - 1] == "|":
+                                                mylist[k] = mylist[k].replace("|e", "")
                                             # e is only case for rule
-                                            elif list[k][i - 1] == ">":
-                                                list[k] = list[k].replace(list[k], "")
+                                            elif mylist[k][i - 1] == ">":
+                                                mylist[k] = mylist[k].replace(mylist[k], "")
 
                                     # there are two chars proceeding rule
                                     # EXAMPLE: XXA or xxA
-                                    if (list[j][location - 1] != "|" and list[j][location - 1] != ">") and (
-                                            list[j][location - 2] != "|" and list[j][
+                                    if (mylist[j][location - 1] != "|" and mylist[j][location - 1] != ">") and (
+                                            mylist[j][location - 2] != "|" and mylist[j][
                                         location - 2] != ">") and (
-                                            list[j][location - 2] != rule):
-                                        list[j] = list[j] + "|" + list[j][location - 2:location]
+                                            mylist[j][location - 2] != rule):
+                                        mylist[j] = mylist[j] + "|" + mylist[j][location - 2:location]
                                         #
                                         # remove original empty string from rule
                                         #
                                         # there is component before the 'e' component
-                                        if list[k][i - 1] == "|":
-                                            list[k] = list[k].replace("|e", "")
+                                        if mylist[k][i - 1] == "|":
+                                            mylist[k] = mylist[k].replace("|e", "")
                                         # e is only case for rule
-                                        elif list[k][i - 1] == ">":
-                                            list[k] = list[k].replace(list[k], "")
+                                        elif mylist[k][i - 1] == ">":
+                                            mylist[k] = mylist[k].replace(mylist[k], "")
 
                 string = ""
-                for i in range(len(list)):
-                    string = string + list[i] + "\n"
+                for i in range(len(mylist)):
+                    string = string + mylist[i] + "\n"
 
                     CNF = CNF.replace(CNF[0:], string)
-                count = sum('e' in s for s in list)
+                count = sum('e' in s for s in mylist)
                 stage2 = CNF
                 out.write(stage2 + "\n")
 
@@ -312,7 +314,10 @@ def convertToCNF(CFG, outputfile):
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         # step 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-
+        for k in range(len(mylist)):  # loop through each line
+            for i in range(len(mylist[k])):  # loop through contents of line
+                if mylist[k][i].isupper() and i == len(mylist[k]):
+                    break
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
 
