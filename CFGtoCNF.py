@@ -5,6 +5,7 @@
 # Kayla Moore & Addison Raak
 # Python program that converts a Context Free Grammar into Chomsky Normal Form
 
+import string
 
 #################################################
 # convertToString - reads input file and converting
@@ -154,16 +155,24 @@ def convertToCNF(CFG, outputfile):
         out.write("STEP 3: \n\n" + stage3 + "\n")
 
         # STEP 4: remove rules that go to three or more terms ------TO-DO--------
+        alpha = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
+        lower = alpha.split(" ")
+        upper = alpha.upper().split(" ")
         for k in range(len(mylist)):
             for i in range(len(mylist[k])):
-                if "->" and "|" not in mylist[k][i:i+3]:
+                if mylist[k][i:i+3].:
                     triple = mylist[k][i:i+3]
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
 
-        # FOR STEP 5 WE MIGHT NEED REGEX TO CHECK UPPER/LOWER
         # STEP 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
+        for k in range(len(mylist)):
+            for i in range(len(mylist[k])):
+                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
+                    
+
+
 
         stage5 = ""
         out.write("STEP 5: \n\n" + stage5 + "\n")
