@@ -31,6 +31,9 @@ def convertToString(inputfile):
 # ==================================================================================
 def convertToCNF(CFG, outputfile):
     with open(outputfile, "w") as out:
+        # converting CFG into Chomsky Normal Form!
+        out.write("-------BEGINNING CFG CONVERSION TO CNF!-------\n\n")
+
         # STEP 1: make new start rule
         start = CFG[0]   # finding original start letter
         firstline = start + "0->" + start
@@ -42,6 +45,7 @@ def convertToCNF(CFG, outputfile):
         # STEP 2: remove all empty strings ------TO-DO--------
         mylist = CNF.split("\n")  # split up CNF into seperate strings for each line
         count = sum('e' in s for s in mylist)
+        msg = "STEP 2: \n"
         while count > 0:
             for loop in range(count):
                 for k in range(len(mylist)):  # loop through each line
@@ -215,16 +219,20 @@ def convertToCNF(CFG, outputfile):
                                         # e is only case for rule
                                         elif mylist[k][i - 1] == ">":
                                             mylist[k] = mylist[k].replace(mylist[k], "")
-                # print updated grammar to output file
+                # check that list doesnt have an empty value
+                if mylist[len(mylist) - 1] == "":
+                    mylist.remove(mylist[len(mylist) - 1])
+                # convert list back to string
                 string = ""
                 for i in range(len(mylist)):
                     string = string + mylist[i] + "\n"
                     CNF = CNF.replace(CNF[0:], string)
                 count = sum('e' in s for s in mylist)
 
-        stage2 = CNF
-        # print updated grammar to output file
-        out.write("STEP 2: \n\n" + stage2 + "\n")
+                stage2 = CNF
+                # print updated grammar to output file
+                out.write(msg + "\n" + stage2 + "\n")
+                msg = ""
 
         # STEP 3: remove S0->S (copy S to S0) and remove any solo rules within a rule's contents
         new = start + "0" + CNF[7:CNF.find("\n", 6)]    # first line is initialized with 6 chars; start index of line 2
@@ -278,6 +286,9 @@ def convertToCNF(CFG, outputfile):
                                 copy = mylist[j][mylist[j].find(">") + 1:]
                         mylist[k] = mylist[k].replace(mylist[k][-1], copy)
 
+        # check that list doesnt have an empty value
+        if mylist[len(mylist)-1] == "":
+            mylist.remove(mylist[len(mylist)-1])
         # convert list back into string
         string = ""
         for i in range(len(mylist)):
@@ -291,29 +302,52 @@ def convertToCNF(CFG, outputfile):
         alpha = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
         lower = alpha.split(" ")
         upper = alpha.upper().split(" ")
-        for k in range(len(mylist)):
-            for i in range(len(mylist[k])):
-                if mylist[k][i:i+3]:
-                    triple = mylist[k][i:i+3]
+        #for k in range(len(mylist)):
+            #for i in range(len(mylist[k])):
+                #if mylist[k][i:i+3]:
+                    #triple = mylist[k][i:i+3]
 
         stage4 = ""
         out.write("STEP 4: \n\n" + stage4 + "\n")
 
-        # STEP 5: remove rules that have capital letters combined with lowercase letters ------TO-DO--------
+        # STEP 5: remove rules that have capital letters combined with lowercase letters
+        rulecount = 1
+        index = 0
         for k in range(len(mylist)):
-            for i in range(len(mylist[k])):
-                if (mylist[k][i-1] in lower and mylist[k][i] in upper) or (mylist[k][i-1] in upper and mylist[k][i] in lower):
+            for i in range(len(mylist[k])-1):
+                if mylist[k][i] in lower and mylist[k][i+1] in upper:
+                    if mylist[k][i] != index:
+                        new = upper[0] + str(rulecount)
+                        rulecount += 1
+                        index = mylist[k][i]
+                        mylist.append(new + "->" + mylist[k][i])
+                    mylist[k] = mylist[k].replace(mylist[k][i], new)
+                elif mylist[k][i] in upper and mylist[k][i+1] in lower:
+                    if mylist[k][i+1] != index:
+                        new = upper[1] + str(rulecount)
+                        rulecount += 1
+                        index = mylist[k][i+1]
+                        mylist.append(new + "->" + index)
+                    mylist[k] = mylist[k].replace(mylist[k][i+1], new)
 
-
-
-
-        stage5 = ""
+        # convert list back into string
+        string = ""
+        for i in range(len(mylist)):
+            string = string + mylist[i] + "\n"
+            CNF = CNF.replace(CNF[0:], string)
+        stage5 = CNF
         out.write("STEP 5: \n\n" + stage5 + "\n")
+
+        # CFG successfully converted into Chomsky Normal Form!
+        out.write("\n-------CFG SUCCESSFULLY CONVERTED TO CNF!-------")
 
 
 # Runs the program
-#my_CFG = convertToString("CFG.txt")
-#convertToCNF(my_CFG, "test.txt")
+my_CFG = convertToString("CFG.txt")
+convertToCNF(my_CFG, "test.txt")
 
-my_CFG = convertToString("CFG2.txt")
-convertToCNF(my_CFG, "test2.txt")
+my_CFG2 = convertToString("CFG2.txt")
+convertToCNF(my_CFG2, "test2.txt")
+
+my_CFG3 = convertToString("CFG3.txt")
+convertToCNF(my_CFG3, "test3.txt")
