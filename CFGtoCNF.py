@@ -327,19 +327,23 @@ def convertToCNF(CFG, outputfile):
         index = 0
         for k in range(len(mylist)):
             for i in range(len(mylist[k])-1):
+                # in the form "xX"
                 if mylist[k][i] in lower and mylist[k][i+1] in upper:
-                    if mylist[k][i] != index:
+                    if mylist[k][i] != index:   # check if we already have rule to handle this
                         new = upper[0] + str(rulecount)
                         rulecount += 1
                         index = mylist[k][i]
-                        mylist.append(new + "->" + mylist[k][i])
+                        mylist.append(new + "->" + mylist[k][i])   # creating new rule
+                    # replacing instances of lowercase char with name of new rule
                     mylist[k] = mylist[k].replace(mylist[k][i], new)
+                # in the form "Xx"
                 elif mylist[k][i] in upper and mylist[k][i+1] in lower:
-                    if mylist[k][i+1] != index:
+                    if mylist[k][i+1] != index:   # check if we already have rule to handle this
                         new = upper[1] + str(rulecount)
                         rulecount += 1
                         index = mylist[k][i+1]
-                        mylist.append(new + "->" + index)
+                        mylist.append(new + "->" + index)   # creating new rule
+                    # replacing instances of lowercase char with name of new rule
                     mylist[k] = mylist[k].replace(mylist[k][i+1], new)
 
         # convert list back into string
